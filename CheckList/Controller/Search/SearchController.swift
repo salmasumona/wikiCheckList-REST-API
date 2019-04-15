@@ -48,6 +48,8 @@ class SearchController: UIViewController, UITextFieldDelegate {
             //searchTextField.text = ""
             
         }else{
+            wikiList = []
+            searchListTableView.reloadData()
             let viewController = BookMarkController()
             self.navigationController?.pushViewController(viewController, animated: true)
         }
