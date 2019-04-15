@@ -12,8 +12,8 @@ class SearchController: UIViewController, UITextFieldDelegate {
     var searchTextField: UITextField!
     var searchListTableView = CommonUIContainer.shared.commonTableView()
     let tableIdentifier = "cell"
-    var wikiList : [PageData]?
-    var bookmarkList : [PageData]?
+    var wikiList = [PageData]()
+    var bookmarkList = [PageData]()
     var limit: Int = 0
     
     override func viewDidLoad() {
@@ -21,7 +21,12 @@ class SearchController: UIViewController, UITextFieldDelegate {
         view.backgroundColor = .white
         setupTopView()
         setupTableView()
-        print("test")
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        self.tabBarController?.navigationItem.title = "Search"
+        self.tabBarController?.tabBar.isHidden = false
+        self.tabBarController?.navigationController?.navigationBar.isHidden = false
     }
     fileprivate func setupTopView(){
         searchTextField = CommonUIContainer.shared.commonUITextField(placeHolder: "Search")
@@ -65,7 +70,6 @@ class SearchController: UIViewController, UITextFieldDelegate {
         let escapedString = searchTextField.text!.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
 
         let url = "http://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srsearch=\(escapedString)&srlimit=\(limit)"
-        print("url==\(url)")
         Service.shared.getData(urlString: url) { (results, err) in
             LoadingOverlay.shared.hideOverlayView()
 
@@ -80,8 +84,16 @@ class SearchController: UIViewController, UITextFieldDelegate {
     }
     @objc func bookmarkBTNTapped(_ sender:UIButton){
         let index = sender.tag
-        guard let getArr = self.wikiList?[index] else { return }
-        self.bookmarkList?.append(getArr)
+        let getArr = self.wikiList[index]
+        self.bookmarkList.append(getArr)
+        do {
+            let jsonEncoder = JSONEncoder()
+            let jsonData = try jsonEncoder.encode(bookmarkList)
+            UserDefaults.standard.set(jsonData, forKey: "bookmark")
+        } catch {
+            print("Err--")
+        }
+        
         self.createAlert(titleText: "", messageText:"Added to bookmark.")
     }
 }
