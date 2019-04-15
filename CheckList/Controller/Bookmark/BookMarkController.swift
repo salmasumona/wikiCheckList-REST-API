@@ -18,11 +18,10 @@ class BookMarkController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupTableView()
+        print("test")
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        self.tabBarController?.tabBar.isHidden = false
-        self.tabBarController?.navigationController?.navigationBar.isHidden = false
         self.tabBarController?.navigationItem.title = "Bookmark"
         do {
             
@@ -49,21 +48,25 @@ class BookMarkController: UIViewController {
             bmTableView.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
     }
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView == bmTableView {
-            let contentOffset = scrollView.contentOffset.y
-            let contentHeight = scrollView.contentSize.height
-            if (contentOffset > contentHeight - scrollView.frame.height) {
-                print("scrolling Down")
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        if(velocity.y>0) {
+            UIView.animate(withDuration: 2.5, delay: 0, options: UIView.AnimationOptions(), animations: {
+                print("Hide")
                 self.tabBarController?.tabBar.isHidden = false
                 self.tabBarController?.navigationController?.navigationBar.isHidden = true
-            } else {
+            }, completion: nil)
+            
+        } else {
+            UIView.animate(withDuration: 2.5, delay: 0, options: UIView.AnimationOptions(), animations: {
+                print("show")
                 self.tabBarController?.tabBar.isHidden = true
                 self.tabBarController?.navigationController?.navigationBar.isHidden = false
-            }
+
+            }, completion: nil)
         }
     }
-   
 }
 extension BookMarkController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
