@@ -1,0 +1,88 @@
+//
+//  ViewController.swift
+//  CheckList
+//
+//  Created by Sumona Salma on 4/13/19.
+//  Copyright © 2019 Sumona Salma. All rights reserved.
+//
+
+import UIKit
+
+class SearchController: UIViewController, UITextFieldDelegate {
+    var searchTextField: UITextField!
+    var searchListTableView = CommonUIContainer.shared.commonTableView()
+    let tableIdentifier = "cell"
+    var wikiList : [PageData]?
+    var bookmarkList : [PageData]?
+    var limit: Int = 0
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        setupTopView()
+        setupTableView()
+        print("test")
+    }
+    fileprivate func setupTopView(){
+        searchTextField = CommonUIContainer.shared.commonUITextField(placeHolder: "Search")
+        self.searchTextField.delegate = self
+        view.addSubview(searchTextField)
+        NSLayoutConstraint.activate([
+            searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant:-40),
+            searchTextField.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.09),
+            searchTextField.widthAnchor.constraint(equalTo: view.widthAnchor),
+        ])
+    }
+    func textFieldShouldReturn(_ searchTextField: UITextField) -> Bool {
+        if searchTextField.text != "" {
+            limit = 20
+            wikiList = []
+            LoadingOverlay.shared.showOverlay(view: UIApplication.shared.keyWindow!)
+            fetchData(limit: limit)
+            //searchTextField.text = ""
+            searchTextField.resignFirstResponder()
+        }else{
+            let viewController = BookMarkController()
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
+       
+        return true
+    }
+    
+    fileprivate func setupTableView(){
+        searchListTableView.register(SearchListCell.self, forCellReuseIdentifier: tableIdentifier)
+        searchListTableView.dataSource = self
+        searchListTableView.delegate = self
+        searchListTableView.rowHeight = 50.0
+        view.addSubview(searchListTableView)
+        NSLayoutConstraint.activate([
+            searchListTableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant:1),
+            searchListTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant:-5),
+            searchListTableView.widthAnchor.constraint(equalTo: view.widthAnchor)
+        ])
+    }
+    func fetchData(limit:Int) {
+        let escapedString = searchTextField.text!.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+
+        let url = "http://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srsearch=\(escapedString)&srlimit=\(limit)"
+        print("url==\(url)")
+        Service.shared.getData(urlString: url) { (results, err) in
+            LoadingOverlay.shared.hideOverlayView()
+
+            if let err = err {
+                print("Failed to fetch data:", err)
+                return
+            }
+            guard let results = results else {return}
+            self.wikiList = results.query.search ?? []
+            self.searchListTableView.reloadData()
+        }
+    }
+    @objc func bookmarkBTNTapped(_ sender:UIButton){
+        let index = sender.tag
+        guard let getArr = self.wikiList?[index] else { return }
+        self.bookmarkList?.append(getArr)
+        self.createAlert(titleText: "", messageText:"Added to bookmark.")
+    }
+}
+
