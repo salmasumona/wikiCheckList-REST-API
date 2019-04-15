@@ -39,13 +39,14 @@ class SearchController: UIViewController, UITextFieldDelegate {
         ])
     }
     func textFieldShouldReturn(_ searchTextField: UITextField) -> Bool {
+        searchTextField.resignFirstResponder()
         if searchTextField.text != "" {
             limit = 20
             wikiList = []
             LoadingOverlay.shared.showOverlay(view: UIApplication.shared.keyWindow!)
             fetchData(limit: limit)
             //searchTextField.text = ""
-            searchTextField.resignFirstResponder()
+            
         }else{
             let viewController = BookMarkController()
             self.navigationController?.pushViewController(viewController, animated: true)
