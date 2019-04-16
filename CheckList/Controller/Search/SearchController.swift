@@ -50,8 +50,9 @@ class SearchController: UIViewController, UITextFieldDelegate {
         }else{
             wikiList = []
             searchListTableView.reloadData()
-            let viewController = BookMarkController()
-            self.navigationController?.pushViewController(viewController, animated: true)
+            //let viewController = BookMarkController()
+            //self.navigationController?.pushViewController(viewController, animated: true)
+            tabBarController?.selectedIndex = 1
         }
        
         return true
@@ -86,18 +87,35 @@ class SearchController: UIViewController, UITextFieldDelegate {
         }
     }
     @objc func bookmarkBTNTapped(_ sender:UIButton){
+        
         let index = sender.tag
         let getArr = self.wikiList[index]
-        self.bookmarkList.append(getArr)
         do {
+            let data = UserDefaults.standard.object(forKey: "bookmark")
+            let jsonDecoder = JSONDecoder()
+            if data != nil {
+                let bookmarkData = try jsonDecoder.decode([PageData].self, from: data as! Data)
+                self.bookmarkList = bookmarkData
+            }
+            if self.bookmarkList.count == 0 {
+                self.bookmarkList.append(getArr)
+            }else{
+                for val in self.bookmarkList {
+                    if val.pageid == getArr.pageid {
+                        self.createAlert(titleText: "", messageText:"Already added.")
+                        return
+                    }
+                }
+                self.bookmarkList.append(getArr)
+            }
             let jsonEncoder = JSONEncoder()
             let jsonData = try jsonEncoder.encode(bookmarkList)
             UserDefaults.standard.set(jsonData, forKey: "bookmark")
+            self.createAlert(titleText: "", messageText:"Added to bookmark.")
+            
         } catch {
             print("Err--")
         }
-        
-        self.createAlert(titleText: "", messageText:"Added to bookmark.")
     }
 }
 

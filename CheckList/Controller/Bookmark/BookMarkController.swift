@@ -97,3 +97,9 @@ extension BookMarkController: UITableViewDelegate {
     }
 }
 
+extension BookMarkController: UIScrollViewDelegate{
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.tabBarController?.tabBar.isHidden = false
+        self.tabBarController?.navigationController?.navigationBar.isHidden = false
+    }
+}
