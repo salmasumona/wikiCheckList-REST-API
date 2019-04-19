@@ -7,7 +7,7 @@ Feature List :
 1. REST Api call
 2. JSON parse
 3. TableView render data
-4. Onload Pagination
+4. Pagination when scroll
 5. Search
 6. Store data locally
 7. Modal
