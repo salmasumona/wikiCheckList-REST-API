@@ -31,6 +31,17 @@ class CommonUIContainer: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }
+    func commonTextView(text: String, color: UIColor,textColor:UIColor) -> UITextView {
+        let textview = UITextView()
+        textview.textAlignment = .left
+        textview.text = text
+        textview.textColor = textColor
+        textview.backgroundColor = color
+        textview.font = .systemFont(ofSize: 16)
+        textview.isEditable = false
+        textview.translatesAutoresizingMaskIntoConstraints = false
+        return textview
+    }
     func commonLabelUI(text: String, color: UIColor,textColor:UIColor) -> UILabel {
         let label = UILabel()
         label.textAlignment = .left
@@ -38,8 +49,8 @@ class CommonUIContainer: UIViewController {
         label.textColor = textColor
         label.backgroundColor = color
         label.font = UIFont.boldSystemFont(ofSize: label.font.pointSize)
-        label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
         label.sizeToFit()
         label.font = label.font.withSize(16)
         label.minimumScaleFactor=0.3
@@ -56,7 +67,7 @@ class CommonUIContainer: UIViewController {
         button.setTitleColor(titleColor, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         button.titleLabel!.font = UIFont.boldSystemFont(ofSize: button.titleLabel!.font.pointSize)
-        button.titleLabel?.minimumScaleFactor=0.1
+        //button.titleLabel?.minimumScaleFactor=0.1
         button.titleLabel!.numberOfLines = 2
         button.clipsToBounds = true
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)

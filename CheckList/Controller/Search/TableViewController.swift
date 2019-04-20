@@ -18,9 +18,7 @@ extension SearchController: UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: tableIdentifier, for: indexPath) as! SearchListCell
         if wikiList.isEmpty == false {
             cell.info = wikiList[indexPath.item]
-            cell.bookmarkBTN.tag = indexPath.item
-            cell.bookmarkBTN.addTarget(self, action: #selector(bookmarkBTNTapped), for: .touchUpInside)
-
+            cell.accessoryType = .disclosureIndicator
         }
         return cell
     }

@@ -77,8 +77,6 @@ extension BookMarkController: UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: tableIdentifier, for: indexPath) as! SearchListCell
         if bookmarkList.isEmpty == false {
             cell.titleLabel.text = bookmarkList[indexPath.item].title
-            cell.bookmarkBTN.backgroundColor = UIColor.white
-            cell.bookmarkBTN.setTitle("", for: .normal)
         }
         return cell
     }
