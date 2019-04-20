@@ -59,7 +59,7 @@ class ModalViewController: UIViewController {
     @objc func bookmarkBTNTapped(_ sender:UIButton){
         
         let getArr = self.data
-        self.bookmarkList.append(getArr!)
+       // self.bookmarkList.append(getArr!)
         do {
             let data = UserDefaults.standard.object(forKey: "bookmark")
             let jsonDecoder = JSONDecoder()
@@ -67,6 +67,7 @@ class ModalViewController: UIViewController {
                 let bookmarkData = try jsonDecoder.decode([PageData].self, from: data as! Data)
                 self.bookmarkList = bookmarkData
             }
+            print("self.bookmarkList---\(self.bookmarkList)")
             if self.bookmarkList.count > 0 {
                 for val in self.bookmarkList {
                     if val.pageid == getArr!.pageid {
@@ -75,7 +76,10 @@ class ModalViewController: UIViewController {
                     }
                 }
                 self.bookmarkList.append(getArr!)
+            }else{
+                self.bookmarkList.append(getArr!)
             }
+            print("self.bookmarkList2---\(self.bookmarkList)")
             let jsonEncoder = JSONEncoder()
             let jsonData = try jsonEncoder.encode(bookmarkList)
             UserDefaults.standard.set(jsonData, forKey: "bookmark")

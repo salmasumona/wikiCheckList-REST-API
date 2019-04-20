@@ -27,6 +27,7 @@ class BookMarkController: UIViewController {
             
             let data = UserDefaults.standard.object(forKey: "bookmark")
             let jsonDecoder = JSONDecoder()
+            print("data===\(data)")
             guard let bookmarkdata = data else{return}
             bookmarkList = try jsonDecoder.decode([PageData].self, from: bookmarkdata as! Data)
             print(bookmarkList)
