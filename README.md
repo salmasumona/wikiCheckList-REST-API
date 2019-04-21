@@ -13,4 +13,4 @@ Feature List :
 7. Modal
 8. Hide and show bottom bar while loading
 9. Tab bar
-10.Auto Layout UI
+10. Auto Layout UI
