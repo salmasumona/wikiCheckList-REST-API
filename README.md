@@ -6,11 +6,11 @@ Feature List :
 
 1. REST Api call
 2. JSON parse
-3. TableView render data
-4. Pagination when scroll
+3. UITableView render data
+4. UITableView Infinite Scrolling
 5. Search
 6. Store data locally
 7. Modal
 8. Hide and show bottom bar while loading
 9. Tab bar
-10. Auto Layout UI
+10.Auto Layout UI
