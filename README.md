@@ -11,6 +11,6 @@ Feature List :
 5. Search
 6. Store data locally
 7. Modal
-8. Hide and show bottom bar while loading
+8. Hide and show bottom bar while scrolling
 9. Tab bar
 10. Auto Layout UI
