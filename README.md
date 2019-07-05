@@ -14,3 +14,5 @@ Feature List :
 8. Hide and show bottom bar while scrolling
 9. Tab bar
 10. Auto Layout UI
+
+# https://codecanyon.net/item/ios-wikiarticle-search-app/23788941?s_rank=2
